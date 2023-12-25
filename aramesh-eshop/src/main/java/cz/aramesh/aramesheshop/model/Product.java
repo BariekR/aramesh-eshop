@@ -16,7 +16,7 @@ public class Product {
     @GeneratedValue
     private Long id;
     private String name;
-    @Column(columnDefinition = "nvarchar")
+    @Column(columnDefinition = "LONGTEXT")
     private String description;
     private BigDecimal price;
     @ManyToMany
@@ -26,6 +26,7 @@ public class Product {
         categories = new ArrayList<>();
     }
     public Product(String name, String description, BigDecimal price) {
+        this();
         this.name = name;
         this.description = description;
         this.price = price;

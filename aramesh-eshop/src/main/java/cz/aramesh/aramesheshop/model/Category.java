@@ -15,7 +15,7 @@ public class Category {
     @GeneratedValue
     private Long id;
     private String name;
-    @Column(columnDefinition = "nvarchar")
+    @Column(columnDefinition = "LONGTEXT")
     private String description;
     @ManyToMany(mappedBy = "categories")
     private List<Product> products;
@@ -25,6 +25,7 @@ public class Category {
     }
 
     public Category(String name, String description) {
+        this();
         this.name = name;
         this.description = description;
     }
