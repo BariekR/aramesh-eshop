@@ -1,25 +1,36 @@
-import logo from './logo.svg';
+import { useState, useEffect } from 'react';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export default function App() {
+    const [productObj, setProductObj] = useState([]);
+    const getProductObj = () => {
+        fetch("http://localhost:8080/api/products")
+            .then((response) => response.json())
+            .then((data) => setProductObj(data));
+    };
+    useEffect(() => getProductObj(), []);
+
+    return (
+        <>
+            <h1>Aramesh products</h1>
+            <ol>{getProductListItems(productObj)}</ol>
+        </>
+    );
 }
 
-export default App;
+function ListItem({name}) {
+    return (
+        <li>{name}</li>
+    );
+}
+
+function getProductListItems(productObj) {
+    let products = [];
+    productObj.forEach(product => products.push(product.name));
+
+    return products.map((product, index) => {
+        return <ListItem name={product} key={index} />;
+    });
+}
+
+
