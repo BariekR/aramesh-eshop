@@ -1,26 +1,36 @@
-import { useState, useEffect } from 'react';
 import './App.css';
+import { useState, useEffect } from 'react';
+import Header from "./Header";
+import ListItem from "./ListItem";
 
 export default function App() {
     const [productObj, setProductObj] = useState([]);
+    const [filterProduct, setFilterProduct] = useState("");
     const getProductObj = () => {
-        fetch("http://localhost:8080/api/products")
+        fetch("http://localhost:8080/api/products" + filterProduct)
             .then((response) => response.json())
             .then((data) => setProductObj(data));
     };
-    useEffect(() => getProductObj(), []);
+    useEffect(() => getProductObj(), [filterProduct]);
+
+    function handleButtonClick(category) {
+        setFilterProduct("?category=" + category);
+    }
 
     return (
         <>
-            <h1>Aramesh products</h1>
-            <ol>{getProductListItems(productObj)}</ol>
+            <Header
+                onHomeClick={() => setFilterProduct("")}
+                onLightingClick={() => handleButtonClick("svítidla")}
+                onHeatingClick={() => handleButtonClick("topení")}
+            />
+            <main>
+                <h1>{
+                    filterProduct === "" ? "Aramesh products" : "Aramesh products – " + filterProduct.slice(10)
+                }</h1>
+                <ol>{getProductListItems(productObj)}</ol>
+            </main>
         </>
-    );
-}
-
-function ListItem({name}) {
-    return (
-        <li>{name}</li>
     );
 }
 
